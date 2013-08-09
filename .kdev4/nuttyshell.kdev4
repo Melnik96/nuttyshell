@@ -1,0 +1,19 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x14\x00n\x00u\x00t\x00t\x00y\x00s\x00h\x00e\x00l\x00l)
+
+[CMake]
+Build Directory Count=1
+CMakeDir=/usr/share/cmake-2.8/Modules
+Current Build Directory Index=0
+ProjectRootRelative=./
+
+[CMake][CMake Build Directory 0]
+Build Directory Path=file:///home/melnik/projects/nuttyshell/build
+Build Type=Debug
+CMake Binary=file:///usr/bin/cmake
+Environment Profile=
+Extra Arguments=
+Install Directory=
+
+[Project]
+VersionControlSupport=kdevgit
