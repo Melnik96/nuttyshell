@@ -12,84 +12,36 @@
 #include <wayland-server.h>
 #include <weston/compositor.h>
 
-struct desktop_shell {
-  struct weston_compositor* compositor;
+// class nuttyshell
+static void activate(struct desktop_shell *shell, struct weston_surface *es,
+						  struct weston_seat *seat);
 
-  struct wl_listener idle_listener;
-  struct wl_listener wake_listener;
-  struct wl_listener destroy_listener;
-  struct wl_listener show_input_panel_listener;
-  struct wl_listener hide_input_panel_listener;
-  struct wl_listener update_input_panel_listener;
+static struct workspace* get_current_workspace(struct desktop_shell *shell);
 
-  struct weston_layer fullscreen_layer;
-  struct weston_layer panel_layer;
-  struct weston_layer background_layer;
-  struct weston_layer lock_layer;
-  struct weston_layer input_panel_layer;
+enum shell_surface_type {
+	SHELL_SURFACE_NONE,
+	SHELL_SURFACE_FULLSCREEN,
+	SHELL_SURFACE_MAXIMIZED,
+	SHELL_SURFACE_XWAYLAND
+};
 
+struct nuttyshell {
+  struct weston_compositor* _compositor;
+  struct workspaces* _workspaces;
+  
+  // listeners
+  struct wl_listener _some_listener;
+  
+  // layers
+  struct weston_layer _fullscreen_layer;
+//   struct weston_layer _panel_layer;
+//   struct weston_layer _background_layer;
+//   struct weston_layer lock_layer;
+  
   struct wl_listener pointer_focus_listener;
-  struct weston_surface* grab_surface;
-
-  struct {
-    struct weston_process process;
-    struct wl_client* client;
-    struct wl_resource* desktop_shell;
-
-    unsigned deathcount;
-    uint32_t deathstamp;
-  } child;
-
-  bool locked;
-  bool showing_input_panels;
-  bool prepare_event_sent;
-
-  struct {
-    struct weston_surface* surface;
-    pixman_box32_t cursor_rectangle;
-  } text_input;
-
-  struct weston_surface* lock_surface;
-  struct wl_listener lock_surface_listener;
-
-  struct {
-    struct wl_array array;
-    unsigned int current;
-    unsigned int num;
-
-    struct wl_list client_list;
-
-    struct weston_animation animation;
-    struct wl_list anim_sticky_list;
-    int anim_dir;
-    uint32_t anim_timestamp;
-    double anim_current;
-    struct workspace* anim_from;
-    struct workspace* anim_to;
-  } workspaces;
-
-  struct {
-    char* path;
-    int duration;
-    struct wl_resource* binding;
-    struct weston_process process;
-    struct wl_event_source* timer;
-  } screensaver;
-
-  struct {
-    struct wl_resource* binding;
-    struct wl_list surfaces;
-  } input_panel;
-
-  struct {
-    struct weston_surface* surface;
-    struct weston_surface_animation* animation;
-    enum fade_type type;
-    struct wl_event_source* startup_timer;
-  } fade;
-
-  uint32_t binding_modifier;
-  enum animation_type win_animation_type;
+  struct weston_surface *grab_surface;
+  
+  bool _locked;
 };
 
 WL_EXPORT int
